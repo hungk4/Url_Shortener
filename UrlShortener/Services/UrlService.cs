@@ -14,8 +14,14 @@ public class UrlService : IUrlService
         _db = db;
     }
 
-    public async Task<string> CreateShortUrl(string originalUrl)
-    {
+    public async Task<string> CreateShortUrl(string originalUrl, string? customKey = null)
+    {   
+        if( customKey != null)
+        {
+            // Check trùng 
+            
+
+        }
         var url = new Url { OriginalUrl = originalUrl, ShortKey = "" };
         _db.Urls.Add(url);
         await _db.SaveChangesAsync();

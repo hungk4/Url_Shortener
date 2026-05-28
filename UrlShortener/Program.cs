@@ -44,6 +44,13 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+// Tự động chạy Migration để tạo bảng trên Supabase khi khởi chạy ứng dụng
+using (var scope = app.Services.CreateScope())
+{
+    var dbContext = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+    await dbContext.Database.MigrateAsync();
+}
+
 app.UseHttpsRedirection();
 app.UseCors("AllowAll");
 app.MapControllers();

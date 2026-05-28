@@ -1,4 +1,6 @@
 using Microsoft.EntityFrameworkCore;
+using StackExchange.Redis;
+using UrlShortener.BackgroundJobs;
 using UrlShortener.Data;
 using UrlShortener.Services;
 
@@ -13,7 +15,15 @@ builder.Services.AddControllers();
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"))   
 );
+builder.Services.AddSingleton<IConnectionMultiplexer>(
+    ConnectionMultiplexer.Connect(
+        builder.Configuration.GetConnectionString("Redis")!
+    )
+);
+
 builder.Services.AddScoped<IUrlService, UrlService>();
+builder.Services.AddScoped<IClickService, ClickService>();
+builder.Services.AddHostedService<ClickProcessorJob>();
 
 var app = builder.Build();
 

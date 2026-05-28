@@ -10,4 +10,5 @@ public class AppDbContext : DbContext
     }
 
     public DbSet<Url> Urls { get; set; }
+    public DbSet<Clicks> Clicks { get; set; }
 }
